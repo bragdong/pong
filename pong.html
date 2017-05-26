@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pong Table</title>
+
+  <style>
+    canvas{
+      width: 800;
+      height: 500;
+      border : solid red 4px;
+    };
+  </style>
+
+</head>
+
+ <body id="pongTable">
+
+
+<canvas id = 'canvas'>
+</canvas>
+
+ <script type="text/javascript">
+
+//Initialize
+var player1x = 10;
+var player1y = 10;
+var player2x = 755;
+var player2y = 100;
+var keypressed = document.getElementById('pongTable');
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+canvas.width = 800;
+canvas.height = 500;
+
+// Create event Listeners for key presses
+ keypressed.addEventListener('keydown', function(evt) {
+              event.preventDefault();
+ console.log(evt.keyCode);
+              switch (evt.keyCode) {
+                  case 65:  //A up
+                      player1y = player1y - 10;
+                      break;
+                  case 90:  // Z down
+                      player1y = player1y + 10;
+                      break;
+                  case 38:
+                      player2y = player2y - 10;
+                      break;
+                  case 40:
+                      player2y = player2y + 10;
+                      break;
+              }
+ });
+
+var lb = 0, rb=800, tb=0,bb=500;
+var context;
+var dx=4;
+var dy=4;
+var y=500;
+var x=4;
+var r=15;
+
+function intersect() {
+    // return !(r1.right < r2.left ||
+    //     r1.top > r2.bottom ||
+    //     r1.left > r2.right ||
+    //     r1.bottom < r2.top
+    // );
+    return false;
+}
+
+function intersectR(x,bound) {
+
+}
+
+        function tick(dt) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // paddle1
+            ctx.fillStyle = 'grey';
+            ctx.fillRect(player1x,player1y,30,100);
+            //paddle2
+            ctx.fillStyle = 'grey';
+            ctx.fillRect(player2x,player2y,30,100);
+
+            ctx.fillStyle = '#20';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(400,500);
+            ctx.lineTo(400,0);
+            ctx.stroke();
+
+
+            ctx.beginPath();
+            ctx.fillStyle= "#0000ff";
+            ctx.arc(x,y,r,0,Math.PI*2,true);
+            ctx.closePath();
+            ctx.fill();
+
+            x += dx;
+            // if (x>rb) {
+            // if(intersectR(x,player2x)){
+            if( (x > player2x) && (y > player2y && y< player2y )){
+              dx=-dx;
+              x=player2x;
+            } else if (x>rb) {
+                dx=-dx;
+                x=rb;
+              } else if ( (x < player1x+40) && (y > player1y && y<player1y) ){
+              // } else if (x < 0){
+                dx =-dx;
+                x=player1x+40;
+              } else if (x<0) {
+                dx =-dx;
+                x=0;
+              }
+            // }
+
+            y += dy;
+            if(y>bb) {
+              dy=-dy;
+              y=bb;
+            } else if (y < 0){
+              dy =-dy;
+              y=0;
+            }
+            window.requestAnimationFrame(tick);
+        }
+
+        window.requestAnimationFrame(tick);
+
+    </script>
+</body>
+
+</html>
